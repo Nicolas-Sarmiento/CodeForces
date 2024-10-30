@@ -1,32 +1,78 @@
 #include<bits/stdc++.h>
 using namespace std;
-unordered_map<int,int> S;
-int log3(int a)
-{
-    return log2(a) / log2(3);
+typedef long long ll;
+class Node{
+    public:
+    ll l;
+    ll r;
+    ll val;
+    Node* left;
+    Node* right;
+    Node(ll l, ll r) : l(l), r(r), val(0), left(nullptr), right(nullptr) {}
+    ~Node() {
+        delete left;   
+        delete right;  
+    }
+};
+
+Node* create_node(ll l, ll r, vector<ll> &L){
+    Node* node = new Node(l, r);
+    if(l == r){
+        node->val = L[l];
+        return node;
+    }
+    node->left = create_node(l, (l+r)/2, L);
+    node->right = create_node(((l+r)/2)+1, r, L);
+    node->val = node->left->val+node->right->val;
+    return node;
 }
+
+void set_node(Node* node, ll i, ll x){
+    if( node->l == node->r){
+        node->val = x;
+        return;
+    }
+    if (i <= (node->l+node->r)/2){
+        set_node(node->left, i, x);
+    }else{
+        set_node(node->right, i, x);
+    }
+    node->val = node->left->val+node->right->val; // max
+}
+
+int query(Node* node, ll l, ll r){
+    if (node->l == l && node->r == r){
+        return node->val;
+    }
+    int mid = (node->l+node->r)/2;
+    if (r <= mid){
+        return query(node->left, l, r);
+    }else if(l > mid){
+        return query(node->right, l,r);
+    }else{
+        return query(node->left, l, mid) + query(node->right, mid+1, r); // max
+    }
+}
+
+vector<ll> dp (200010);
+void s(){
+    dp[0] = 0;
+    for(int i = 1; i < 200007; i++ ){
+        dp[i] = dp[i/3] + 1;
+    }
+}
+
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(0);
+    s();
+    Node* root = create_node(0, 200008, dp);
     int t; cin >> t;
     while(t--){
-        int l, r;
-        long long st = 0;
+        ll l, r;
         cin >> l >> r;
-        int times = log3(l) + 1;
-        long long th = 3*(times);
-        for(int i = l; i <= r; i++){
-            if (th <= i){
-                th *= 3;
-                times++;
-                cout << th << ' ' << i << '\n';
-            }
-            st += times;
-            if( i == l ){
-                st *= 2;
-            }
-        }
-        cout << st << '\n';
+        ll cnt = query(root, l, r) + dp[l]; 
+        cout << cnt << '\n';
     }
     return 0;
 }
