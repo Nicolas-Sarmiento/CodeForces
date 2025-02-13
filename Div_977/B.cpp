@@ -1,41 +1,25 @@
 #include<bits/stdc++.h>
 using namespace std;
 typedef long long ll;
+void solve(){
+    ll n, x, a; cin >> n >> x;
+    map<ll,ll> mp;
+    for(ll i = 0; i < n; i++){
+        cin >> a;
+        mp[a]++;
+    }
+    for(ll i = 0; i <= n; i++){
+        if(!mp[i]){ cout << i << '\n';break;}
+        if( mp[i] > 1){
+            mp[i+x] += mp[i]-1;
+        }
+    }
+}
 int main(){
     ios_base::sync_with_stdio(false);cin.tie(0);
     int t; cin >> t;
     while(t--){
-       ll n, x, a; cin >> n >> x;
-       vector<ll> d; 
-       set<ll> s;
-       for(int i = 0; i < n; i++){
-            cin >> a;
-            if(s.count(a)) d.push_back(a);
-            s.insert(a);
-       } 
-       sort(d.begin(), d.end());
-       ll mn = 0;
-       ll nt;
-       int j = 0;
-       for(auto &i : s){
-            if( i == mn) mn++;
-            else{
-                if( j >= d.size()) continue;
-                if( d[j] > mn) continue;
-                nt = mn - d[j];
-                if( !(nt%x) ){
-                    mn++;
-                    j++;
-                    if(i == mn) mn++;
-                }
-            }
-       }
-       for(int i = j; i < d.size(); i++){
-            if( d[i] > mn) continue;
-            nt = mn - d[i];
-            if( !(nt%x) ) mn++;
-       }
-       cout << mn << '\n';
+        solve();
     }
     return 0;
 }
