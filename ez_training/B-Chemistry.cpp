@@ -14,11 +14,12 @@ int main(){
         }
         ll odds = 0;
         for(auto it = m.begin(); it != m.end(); it++){
-            odds += it->second%2 ? 1 : 0;
+            odds += it->second%2;
         }
-        ll kaux = min( 0ll, k - odds);
-        odds = min( 0ll, odds - k);
-        if( (n-k))
+        if( (n-k) % 2){
+            odds--;
+        }
+        cout << (k >= odds && !((k-odds) % 2) ? "YES" : "NO" ) << '\n';
     }
     return 0;
 }
