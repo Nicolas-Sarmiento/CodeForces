@@ -4,16 +4,18 @@ typedef long long ll;
 
 int main(){
     ios_base::sync_with_stdio(false);cin.tie(0);
-    ll n, a; cin >> n;
-    map<ll, vector<ll>> m;
-    for(ll i = 1; i <= n; i++){
-        cin >> a;
-        if(a == -1) continue;
-        m[a].push_back(i);
+    ll n; cin >> n;
+    vector<ll> v (n) ; for(auto &i : v) cin >> i;
+    ll ix = 0, cnt = 0, mx = 1;
+    for( ll i = 0; i < n; i++){
+        ix = i;
+        cnt = 1;
+        while( v[ix] != -1){
+            ix = v[ix] - 1;
+            cnt++;
+        }
+        mx = max(mx, cnt);
     }
-    stack<ll> s;
-    ll mx = 0;
-    s.push(1);
-
+    cout << mx << '\n';
     return 0;
 }
