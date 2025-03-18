@@ -6,8 +6,10 @@ int main(){
     ios_base::sync_with_stdio(false);cin.tie(0);
     int t; cin >> t;
     while(t--){
-        ll a, b; cin >> a >> b;
-        cout << min({a, b, (a+b)/3}) << '\n';
+        int n, m, k; cin >> n >> m >>k;
+        int x = min(n/k, m);
+        int y = ((m-x)/(k-1))+ ((m-x) % (k-1) ? 1 : 0);
+        cout << x - y << '\n';
     }
-    return 0;   
+    return 0;
 }
